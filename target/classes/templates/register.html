@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-user-shield"></i> Sistema de Autenticación</h1>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-form">
+            <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
+
+            <!-- Mostrar mensajes de error -->
+            <div th:if="${error}" class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i> <span th:text="${error}"></span>
+            </div>
+
+            <form th:action="@{/register}" th:object="${usuarioDto}" method="post">
+                <!-- Información Personal -->
+                <div class="form-group">
+                    <label for="nombres"><i class="fas fa-user"></i> Nombres:</label>
+                    <input type="text" id="nombres" th:field="*{nombres}" required
+                           placeholder="Ingresa tus nombres">
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidos"><i class="fas fa-user"></i> Apellidos:</label>
+                    <input type="text" id="apellidos" th:field="*{apellidos}" required
+                           placeholder="Ingresa tus apellidos">
+                </div>
+
+                <div class="form-group">
+                    <label for="correoElectronico"><i class="fas fa-envelope"></i> Correo Electrónico:</label>
+                    <input type="email" id="correoElectronico" th:field="*{correoElectronico}" required
+                           placeholder="tu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="tipoIdentificacion"><i class="fas fa-id-card"></i> Tipo de Identificación:</label>
+                    <select id="tipoIdentificacion" th:field="*{tipoIdentificacion}" required>
+                        <option value="">Selecciona un tipo</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="TI">Tarjeta de Identidad</option>
+                        <option value="PA">Pasaporte</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numeroIdentificacion"><i class="fas fa-id-card"></i> Número de Identificación:</label>
+                    <input type="text" id="numeroIdentificacion" th:field="*{numeroIdentificacion}" required
+                           placeholder="Ingresa tu número de identificación">
+                </div>
+
+                <div class="form-group">
+                    <label for="fechaNacimiento"><i class="fas fa-calendar"></i> Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="genero"><i class="fas fa-venus-mars"></i> Género:</label>
+                    <select id="genero" th:field="*{genero}" required>
+                        <option value="">Selecciona tu género</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono"><i class="fas fa-phone"></i> Teléfono:</label>
+                    <input type="tel" id="telefono" th:field="*{telefono}"
+                           placeholder="Ingresa tu teléfono">
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group">
+                    <label for="claveHash"><i class="fas fa-lock"></i> Contraseña:</label>
+                    <div class="password-container">
+                        <input type="password" id="claveHash" th:field="*{claveHash}" required
+                               placeholder="Mínimo 6 caracteres">
+                        <button type="button" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar" style="height: 4px; background: #e1e5e9; margin-top: 5px; border-radius: 2px;">
+                            <div id="password-strength" style="height: 100%; width: 0%; border-radius: 2px; transition: all 0.3s ease;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword"><i class="fas fa-lock"></i> Confirmar Contraseña:</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required
+                               placeholder="Confirma tu contraseña">
+                        <button type="button" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">
+                    <i class="fas fa-user-plus"></i> Crear Cuenta
+                </button>
+            </form>
+
+            <div class="links">
+                <a th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> ¿Ya tienes cuenta? Inicia Sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Sistema de Autenticación. Todos los derechos reservados.</p>
+    </div>
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
