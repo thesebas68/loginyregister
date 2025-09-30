@@ -9,9 +9,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class AuthConfig {
@@ -40,18 +42,25 @@ public class AuthConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("=== CONFIGURANDO SEGURIDAD ===");
+
         http
-                .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authz -> authz
+                        // Recursos estáticos
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/", "/login", "/register", "/recuperar", "/check-email").permitAll()
+                        // Rutas públicas (GET y POST)
+                        .requestMatchers(
+                                "/", "/login", "/register", "/recuperar", "/check-email",
+                                "/reset-password", "/reset-password/**"  // Permite GET y POST
+                        ).permitAll()
+                        .requestMatchers("/process-login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
                         .loginProcessingUrl("/process-login")
-                        .usernameParameter("username") // Este es el default, pero lo especificamos por claridad
-                        .passwordParameter("password") // Este es el default, pero lo especificamos por claridad
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                         .defaultSuccessUrl("/programas", true)
                         .failureUrl("/login?error=true")
                         .permitAll()
@@ -63,15 +72,16 @@ public class AuthConfig {
                         .invalidateHttpSession(true)
                         .permitAll()
                 )
-                .headers(headers -> headers
-                        .contentTypeOptions(options -> {})
-                        .xssProtection(options -> {})
-                        .cacheControl(options -> {})
-                )
-                //.csrf(csrf -> csrf.disable()); // O mantener habilitado:
-                .csrf(Customizer.withDefaults());
+                .csrf(csrf -> csrf
+                        // Excluir rutas de recuperación de CSRF
+                        .ignoringRequestMatchers(
+                                "/recuperar",
+                                "/reset-password",
+                                "/reset-password/**",
+                                "/process-login"
+                        )
+                );
 
         return http.build();
     }
-
 }

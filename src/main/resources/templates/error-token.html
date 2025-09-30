@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Token Inválido</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-user-shield"></i> Sistema de Autenticación</h1>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-form" style="text-align: center;">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle fa-4x" style="color: #dc3545;"></i>
+            </div>
+
+            <h2>Enlace Inválido o Expirado</h2>
+
+            <div class="alert alert-error">
+                <p th:text="${error}">El enlace de recuperación es inválido o ha expirado.</p>
+            </div>
+
+            <div class="error-details">
+                <p><strong>Posibles razones:</strong></p>
+                <ul style="text-align: left; display: inline-block; margin: 0 auto;">
+                    <li>El enlace ha expirado (válido por 1 hora)</li>
+                    <li>El enlace ya fue utilizado</li>
+                    <li>El enlace es incorrecto o está corrupto</li>
+                </ul>
+            </div>
+
+            <div style="margin: 2rem 0;">
+                <a th:href="@{/recuperar}" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> Solicitar Nuevo Enlace
+                </a>
+            </div>
+
+            <div class="links">
+                <a th:href="@{/login}"><i class="fas fa-sign-in-alt"></i> Volver al Login</a>
+                <a th:href="@{/}"><i class="fas fa-home"></i> Página Principal</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Sistema de Autenticación. Todos los derechos reservados.</p>
+    </div>
+</div>
+</body>
+</html>

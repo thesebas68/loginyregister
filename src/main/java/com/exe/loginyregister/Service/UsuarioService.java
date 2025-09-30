@@ -2,10 +2,11 @@ package com.exe.loginyregister.Service;
 
 import com.exe.loginyregister.Dto.UsuarioDto;
 import com.exe.loginyregister.Entity.Usuario;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-
+@Service
 public interface UsuarioService {
 
     Usuario registrarUsuario(UsuarioDto usuarioDto);
